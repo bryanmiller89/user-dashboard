@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <style>
+        .col-lg-6{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>{{user.first_name}} {{user.last_name}}</h3>
+                <p>User Id # {{user.id}}</p>
+                <p>Email: {{user.email}}</p>
+                <p>Joined: {{user.created_at}} </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h5>Leave a message for {{user.first_name}}</h5>
+                <form action="/message/{{user.id}}" method="POST">
+                    {% csrf_token %}
+                    <p><textarea name="content" id="" cols="100" rows="3"></textarea></p>
+                    <p><input type="submit" value="Leave Message"></p>
+                </form>
+
+                {% for message in user.messages_received.all %}
+                    <div style="border:1px solid gray; padding:1vw; margin:10px;">
+                        <h6>{{message.sender.first_name}}</h6>
+                        <p>{{message.content}}</p>
+                        {% for comment in message.comments.all %}
+                            <div style="margin-left:25px">
+                                <h6>{{comment.sender.first_name}}</h6>
+                                <p>{{comment.content}}</p>
+
+                            </div>
+                        {% endfor %}
+                        <form action="/comment/{{message.id}}/{{user.id}}" method="POST">
+                            {% csrf_token %}
+                            <p><textarea name="content" id="" cols="100" rows="3"></textarea></p>
+                            <p><input type="submit" value="Leave Comment"></p>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

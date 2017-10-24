@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <style>
+        .col-lg-6{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>Register</h3>
+                <form action="/register" method="POST">
+                    {% csrf_token %}
+                    <p>First Name: <input type="text" name="first_name"></p>
+                    <p>Last Name: <input type="text" name="last_name"></p>
+                    <p>Email: <input type="email" name="email"></p>
+                    <p>Password: <input type="text" name="password"></p>
+                    <p>Password Confirmation: <input type="text" name="password_confirmation"></p>
+                    <input type="submit" value="Register">
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <h3>Login</h3>
+                <form action="/login" method="POST">
+                    {% csrf_token %}
+                    <p>Email: <input type="email" name="email"></p>
+                    <p>Password: <input type="text" name="password"></p>
+                    <input type="submit" value="Login">
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
